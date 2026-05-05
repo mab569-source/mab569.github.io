@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Archivo Plurinacional</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f0e8;
+  --bg2: #ede7d9;
+  --surface: #ffffff;
+  --surface2: #faf7f2;
+  --border: #d4c9b0;
+  --border2: #c2b49a;
+  --ochre: #8b5e1a;
+  --ochre2: #a67020;
+  --ochre-light: #f0e4c8;
+  --ochre-dim: rgba(139,94,26,0.1);
+  --red: #7a2318;
+  --red-dim: rgba(122,35,24,0.08);
+  --text: #1a1612;
+  --text2: #3d3328;
+  --text3: #7a6b52;
+  --archive: #1a3d5c;
+  --archive-bg: rgba(26,61,92,0.06);
+  --rep: #4a1a5c;
+  --rep-bg: rgba(74,26,92,0.06);
+  --analysis: #8b5e1a;
+  --analysis-bg: rgba(139,94,26,0.06);
+  --taylor: #1a5c2a;
+  --mbembe: #7a2318;
+  --derrida: #1a2e5c;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:9999;
+  opacity:0.4;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--text);
+  color: var(--bg);
+  padding: 5rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content:'';
+  position:absolute;
+  bottom:0; left:0; right:0;
+  height:3px;
+  background: linear-gradient(90deg, var(--ochre2), var(--ochre), #c8913a);
+}
+
+.hero-inner { max-width: 860px; margin: 0 auto; }
+
+.hero-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ochre2);
+  margin-bottom: 1.8rem;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.04;
+  margin-bottom: 0.8rem;
+  color: #f5f0e8;
+}
+
+.video-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+}
+
+.video-fallback a {
+  text-decoration: none;
+  color: var(--ochre2);
+}
+
+.video-fallback a:hover {
+  color: var(--ochre);
+}
+
+.hero h1 em { font-style: italic; color: var(--ochre2); }
+
+.hero .subtitle {
+  font-size: 1rem;
+  color: #a09070;
+  font-style: italic;
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+  font-family: 'EB Garamond', serif;
+}
+
+.thesis-pill {
+  display: inline-block;
+  background: rgba(139,94,26,0.2);
+  border: 1px solid rgba(166,112,32,0.4);
+  padding: 1rem 1.4rem;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: #d4b88a;
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  max-width: 680px;
+}
+
+/* ── PAGE NAV ── */
+.page-nav {
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top:0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.nav-tabs {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display:none; }
+
+.nav-tab {
+  flex-shrink: 0;
+  padding: 0 0.1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  gap: 0.15rem;
+}
+
+.nav-tab .tab-year {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text3);
+  line-height: 1;
+}
+
+.nav-tab .tab-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--border2);
+}
+
+.nav-tab:hover .tab-year { color: var(--ochre2); }
+.nav-tab.active .tab-year { color: var(--ochre); }
+.nav-tab.active { border-bottom-color: var(--ochre); }
+
+/* ── SECTIONS (pages) ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── LONG-TEXT SECTIONS ── */
+.long-section {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 4rem 2rem 3rem;
+}
+
+.long-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.long-section .section-deck {
+  font-size: 1rem;
+  color: var(--text3);
+  font-style: italic;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.long-section p {
+  margin-bottom: 1.2rem;
+  font-size: 1.05rem;
+  color: var(--text2);
+}
+
+.long-section p:last-child { margin-bottom: 0; }
+
+/* ── THEORY MARKERS ── */
+.tm {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
+  margin-right: 0.3rem;
+  vertical-align: middle;
+  font-style: normal;
+}
+.tm-t { background: rgba(26,92,42,0.12); color: #1a5c2a; border: 1px solid rgba(26,92,42,0.25); }
+.tm-m { background: rgba(122,35,24,0.12); color: #7a2318; border: 1px solid rgba(122,35,24,0.25); }
+.tm-d { background: rgba(26,46,92,0.12); color: #1a2e5c; border: 1px solid rgba(26,46,92,0.25); }
+
+/* ── BLOCKQUOTE ── */
+.bq {
+  margin: 1.5rem 0;
+  padding: 1rem 1.4rem;
+  border-left: 3px solid var(--ochre);
+  background: var(--ochre-light);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.bq .cite {
+  display: block;
+  font-style: normal;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  color: var(--ochre2);
+  margin-top: 0.5rem;
+}
+
+.bq-red {
+  border-left-color: var(--red);
+  background: rgba(122,35,24,0.06);
+}
+
+/* ── TIMELINE NODE ── */
+.node-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 5rem;
+}
+
+.node-yr {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 10vw, 7rem);
+  font-weight: 900;
+  color: var(--ochre);
+  line-height: 0.9;
+  opacity: 0.18;
+  letter-spacing: -2px;
+  margin-bottom: -1rem;
+  display: block;
+}
+
+.node-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 2px solid var(--border);
+}
+
+/* ── SECTION CARD ── */
+.scard {
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.scard-head {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+.scard-head:hover { background: var(--bg2); }
+
+.stag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.6rem;
+  border-radius: 2px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.stag-a { background: var(--archive-bg); color: var(--archive); border: 1px solid rgba(26,61,92,0.2); }
+.stag-r { background: var(--rep-bg); color: var(--rep); border: 1px solid rgba(74,26,92,0.2); }
+.stag-n { background: var(--analysis-bg); color: var(--analysis); border: 1px solid rgba(139,94,26,0.2); }
+
+.scard-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text3);
+  flex: 1;
+}
+
+.stoggle {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text3);
+  transition: transform 0.25s;
+  flex-shrink: 0;
+}
+.scard.open .stoggle { transform: rotate(45deg); }
+
+.scard-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s ease, padding 0.3s ease;
+}
+.scard.open .scard-body {
+  max-height: 6000px;
+  padding: 1.5rem 1.5rem 2rem;
+}
+
+.scard-body p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text2);
+  margin-bottom: 1rem;
+}
+.scard-body p:last-child { margin-bottom: 0; }
+.scard-body em { font-style: italic; color: var(--text); }
+
+/* ── MEDIA ROW ── */
+.media-row {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.media-row.cols-1 { grid-template-columns: 1fr; }
+.media-row.cols-2 { grid-template-columns: 1fr 1fr; }
+.media-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+@media (max-width: 600px) {
+  .media-row.cols-2, .media-row.cols-3 { grid-template-columns: 1fr; }
+}
+
+.media-img {
+  width: 100%;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--border);
+}
+
+.media-caption {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  color: var(--text3);
+  margin-top: 0.4rem;
+  line-height: 1.4;
+}
+
+.video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.video-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.video-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  color: var(--text3);
+  margin-top: 0.4rem;
+}
+
+/* ── SOURCES ── */
+.sources-bar {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.src-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: var(--text3);
+  line-height: 1.4;
+  transition: color 0.15s;
+}
+.src-link:hover { color: var(--ochre2); }
+.src-link::before { content: '↗'; color: var(--ochre); flex-shrink: 0; margin-top: 0.05rem; }
+
+.src-type {
+  color: var(--border2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.52rem;
+}
+
+/* ── NODE NAV ── */
+.node-nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.nnav-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px solid var(--border2);
+  color: var(--text3);
+  padding: 0.55rem 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.nnav-btn:hover { border-color: var(--ochre); color: var(--ochre2); }
+.nnav-btn:disabled { opacity: 0.25; cursor: default; }
+.nnav-btn:disabled:hover { border-color: var(--border2); color: var(--text3); }
+
+.nnav-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text3);
+}
+
+/* ── PROGRESS DOTS ── */
+.progress-dots {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 2rem;
+}
+.pd {
+  width: 28px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.pd.active { background: var(--ochre); }
+
+/* ── INLINE LINK ── */
+a { color: var(--ochre2); text-underline-offset: 3px; }
+a:hover { color: var(--ochre); }
+
+/* ── SECTION DIVIDER ── */
+.sec-div {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--text);
+  color: var(--text3);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.9;
+}
+footer span { color: var(--ochre2); }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Proyecto Digital Final &mdash; SPAN 3267-01 &mdash; Línea de Tiempo Interactiva</div>
+    <h1>El Archivo <em>Plurinacional</em></h1>
+    <p class="subtitle">Discurso, acción e indigenidad en el Estado Boliviano bajo el gobierno de Evo Morales y el Partido Movimiento Al Socialismo (2006–2019)</p>
+    <div class="thesis-pill">
+      El Estado plurinacional no fracasó en representar a los pueblos indígenas, sino que los instrumentaliza, redefiniendo la indigenidad como archivo estatal para producir legitimidad política sin ceder soberanía territorial ni económica.
+    </div>
+  </div>
+</header>
+
+<!-- ══ STICKY NAV ══ -->
+<nav class="page-nav">
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('abstract')">
+      <span class="tab-year" style="font-size:0.8rem">Abstract</span>
+      <span class="tab-label">Introducción</span>
+    </button>
+    <button class="nav-tab" onclick="showPage('marco')">
+      <span class="tab-year" style="font-size:0.8rem">Marco</span>
+      <span class="tab-label">Teórico</span>
+    </button>
+    <button class="nav-tab" onclick="showPage('n0')">
+      <span class="tab-year">2006</span>
+      <span class="tab-label">Ascenso</span>
+    </button>
+    <button class="nav-tab" onclick="showPage('n1')">
+      <span class="tab-year">2009–10</span>
+      <span class="tab-label">Constitución</span>
+    </button>
+    <button class="nav-tab" onclick="showPage('n2')">
+      <span class="tab-year">2011</span>
+      <span class="tab-label">TIPNIS</span>
+    </button>
+    <button class="nav-tab" onclick="showPage('n3')">
+      <span class="tab-year">2014–16</span>
+      <span class="tab-label">Extractivismo</span>
+    </button>
+    <button class="nav-tab" onclick="showPage('n4')">
+      <span class="tab-year">2019</span>
+      <span class="tab-label">Colapso</span>
+    </button>
+    <button class="nav-tab" onclick="showPage('conclusion')">
+      <span class="tab-year" style="font-size:0.8rem">Conclusión</span>
+      <span class="tab-label">Cierre</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════ -->
+<!-- PAGE: ABSTRACT + INTRO -->
+<!-- ══════════════════════════════════════ -->
+<div class="page active" id="page-abstract">
+  <div class="long-section">
+    <h2>Abstract</h2>
+    <p class="section-deck">Proyecto Digital Final — Línea de tiempo interactiva</p>
+
+    <p>En 2009, la nueva Constitución reconoció oficialmente la existencia de treinta y seis naciones indígenas originario campesinas, transformando a Bolivia en el primer país plurinacional de América Latina. Dos años después, ese mismo Estado ordenó la represión policial de una marcha indígena que protestaba la construcción de una carretera a través del Territorio Indígena y Parque Nacional Isiboro Secure (TIPNIS). Esta contradicción no es anecdótica, es estructural.</p>
+
+    <p>Este proyecto propone que el Estado Boliviano bajo la administración del partido político Movimiento Al Socialismo durante los años 2006 hasta el 2019 construyó la indigenidad como categoría fundacional de su discurso oficial, pero que sus propias políticas y acciones revelan una brecha sistemática entre esa representación y el ejercicio concreto del poder. La tesis central es que el Estado plurinacional no fracasó en representar a los pueblos indígenas, sino que los instrumentaliza, redefiniendo la indigenidad como archivo estatal para producir legitimidad política sin ceder soberanía territorial ni económica.</p>
+
+    <p>Para sostener el argumento, el proyecto se apoya en la distinción de Diana Taylor entre archivo y repertorio y el análisis de Achille Mbembe sobre el archivo como instrumento de poder. El discurso oficial del Estado constituye el archivo, mientras que las acciones concretas como el extractivismo, la represión y la concentración de poder constituyen el repertorio que contradice y expone los límites de ese archivo. Al mismo tiempo, el trabajo de Jacques Derrida complementa este marco teórico al iluminar la compulsión estatal de institucionalizar la memoria indígena como gesto político antes que cultural.</p>
+
+    <p>Con ese contexto, el proyecto adopta el formato de una línea de tiempo interactiva digital, estructurada en cinco nodos históricos: 2006, 2009–2010, 2011, 2014–2016, y 2019. Cada nodo presenta el archivo, el repertorio del gobierno boliviano y un análisis crítico de los eventos.</p>
+
+    <div style="height:2.5rem"></div>
+    <h2>Introducción</h2>
+    <p class="section-deck">Contexto histórico y pregunta de investigación</p>
+
+    <p>A comienzos del siglo XXI, América Latina experimentó un giro político hacia la izquierda conocido como la Marea Rosa, caracterizado por el ascenso de gobiernos antineoliberales que reconfiguraron la relación entre Estado, economía y sociedad (<a href="#" onclick="return false;">Cleary</a>). En este contexto regional, la elección de Evo Morales en 2005 —como el primer presidente indígena aymara de Bolivia— fue recibida en amplios sectores como un acontecimiento de ruptura histórica, pues se esperaba que marcara la irrupción de los históricamente marginados en el centro mismo del poder estatal. El proyecto del Movimiento Al Socialismo (MAS) prometía una reforma profunda de la política, con énfasis en la identidad indígena, la redistribución económica, y la refundación del Estado sobre bases plurinacionales, comunitarias y descoloniales (<a href="#" onclick="return false;">Ballivian</a>).</p>
+
+    <p>La Constitución de 2009, aprobada por referéndum con el 61.43% de los votos, parecía consumar esa promesa (<a href="https://pdba.georgetown.edu/Constitutions/Bolivia/bolivia09.html" target="_blank">Bolivia</a>). Bolivia se convertiría oficialmente en un Estado Plurinacional, reconociendo treinta y seis naciones indígenas, garantizando autonomías territoriales y consagrando los derechos de la naturaleza como principio constitucional. Posteriormente, en 2010, el mismo gobierno aprobó la <a href="https://www.lexivox.org/norms/BO-L-N71.html" target="_blank">Ley de Derechos de la Madre Tierra (Ley 71)</a>, uno de los gestos archivísticos más radicales en la región: Bolivia fue el primer país del mundo en otorgar derechos jurídicos a la naturaleza.</p>
+
+    <p>Sin embargo, en agosto de 2011, miles de indígenas del TIPNIS iniciaron una marcha a pie de 600 kilómetros hacia La Paz para protestar la construcción de una carretera sin previa consulta (<a href="#" onclick="return false;">Avila</a>). El 25 de septiembre, en Chaparina, la policía boliviana reprimió violentamente a los manifestantes (<a href="#" onclick="return false;">Achtenberg</a>). Años después, en 2019, el gobierno firmó los Decretos Supremos <a href="https://www.lexivox.org/norms/BO-DS-N3812.xhtml" target="_blank">3812</a> y <a href="https://www.lexivox.org/norms/BO-DS-N3973.html" target="_blank">3973</a>, ampliando las áreas permitidas para las quemas agrícolas y contribuyendo a incendios que consumieron más de 5,3 millones de hectáreas, según Fundación Tierra (<a href="#" onclick="return false;">ERBOL</a>).</p>
+
+    <p>Esta contradicción es el objeto de este proyecto. La pregunta de investigación es: ¿Cómo construye el Estado Boliviano la indigenidad como fundamento político en su discurso, y de qué manera sus propias acciones contradicen esa representación? El proyecto argumenta que el gobierno del MAS durante los años 2006–2019 no fracasó en representar a los pueblos indígenas, sino que instrumentaliza la identidad indígena para producir una categoría archivística que funciona como discurso oficial y fuente de legitimidad simbólica. Las contradicciones que emergen no son accidentales, sino constitutivas de un modelo de poder que requiere la imagen de la descolonización sin asumir sus consecuencias materiales.</p>
+
+    <div class="media-row cols-2">
+      <div>
+        <img src="imgs/tiwanaku_ceremony.jpg" alt="Posesión simbólica en Tiwanaku, enero 2006" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+        <p class="media-caption">Evo Morales en la ceremonia de posesión simbólica en Tiwanaku, enero 2006 </p>
+      </div>
+      <div>
+        <img src="imgs/tipnis_march.jpg" alt="VIII Marcha Indígena del TIPNIS 2011" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+        <p class="media-caption">VIII Marcha Indígena del TIPNIS hacia La Paz, 2011 </p>
+      </div>
+    </div>
+
+    <div class="node-nav-row">
+      <button class="nnav-btn" disabled>← Anterior</button>
+      <span class="nnav-count">Sección 1 de 8</span>
+      <button class="nnav-btn" onclick="showPage('marco')">Marco Teórico →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- PAGE: MARCO TEÓRICO -->
+<!-- ══════════════════════════════════════ -->
+<div class="page" id="page-marco">
+  <div class="long-section">
+    <h2>Marco Teórico</h2>
+    <p class="section-deck">Taylor · Mbembe · Derrida</p>
+
+    <p>El marco teórico del proyecto se estructura a base de tres autores del archivo: Diana Taylor, Achille Mbembe y Jacques Derrida. A través del proyecto, la argumentación es que el Estado Boliviano instrumentaliza la identidad indígena, analizando la manipulación archivísticamente: capturando el repertorio indígena y lo inscribe en el archivo jurídico estatal, transformando conocimientos y tradiciones indígenas en categorías administrables por el Estado. Para sostener este argumento, el proyecto utiliza los tres autores de una manera secuencial: <span class="tm tm-t">Taylor</span> identifica el mecanismo, <span class="tm tm-m">Mbembe</span> explica por qué ese mecanismo es rentable para el poder, y <span class="tm tm-d">Derrida</span> revela la estructura que lo hace invisible como poder.</p>
+
+    <p><span class="tm tm-t">Taylor</span> La distinción de Diana Taylor entre archivo y repertorio en <em>The Archive and the Repertoire</em> provee el instrumento analítico central. Taylor define la memoria archival como aquella que <a href="#" onclick="return false;">"exists as documents, maps, literary texts, letters, archaeological remains, bones, videos, films"</a> (Taylor 19) —todo aquello material que resiste cambio. El repertorio, en cambio, actúa como la memoria encarnada en acciones como "performances, gestures, orality…all the acts usually thought of as ephemeral, non reproducible knowledge" (Taylor 20). Taylor sitúa esta distinción dentro de la historia de la Conquista, argumentando que "what changed was not that writing displaced embodied practice… but the degree of legitimization of writing over other epistemic and mnemonic systems" (Taylor 18). Las prácticas del repertorio indígena, como la danza o reclamos de tierra, dejaron de tener peso legal dentro del nuevo orden colonial. Es así que el conocimiento encarnado fue activamente deslegitimado por el archivo letrado.</p>
+
+    <p>Aplicado al contexto boliviano, lo que hace particularmente perverso el caso del gobierno de Morales es que repite esta operación dentro de su propio proyecto descolonial. Taylor anticipa este problema al analizar cómo los programas de la UNESCO, para proteger el patrimonio intangible, trasladan materiales del repertorio al archivo, cometiendo un proceso que no preserva sino clausura porque: "the methods of preservation applicable to the physical heritage are inappropriate for the intangible heritage" (Taylor 23). En este sentido, al inscribir conceptos aymaras en la <a href="https://ecojurisprudence.org/wp-content/uploads/2022/02/Bolivia_Law-No.-300-the-Framework-Law-of-Mother-Earth-and-Integral-Development-to-Live-Well_70.pdf" target="_blank">Ley 300</a>, Bolivia convierte una filosofía comunitaria en patrimonio intangible administrado por el Estado, vaciando su carácter vivo, colectivo y políticamente indeterminado.</p>
+
+    <p><span class="tm tm-m">Mbembe</span> En <em>The Power of the Archive and Its Limits</em>, Mbembe añade la función del archivo para legitimar. Mbembe define el archivo como "the product of a judgment, the result of the exercise of a specific power and authority" que determina qué documentos merecen el estatus de archivable y cuáles son descartados como "unarchivable" (Mbembe 20). Este acto de discriminar y seleccionar produce la versión oficial de la realidad que simultáneamente borra las versiones alternativas. En el caso boliviano, el gobierno opera como la máquina selectiva, archivando la identidad indígena que le es útil, mientras excluye las otras dimensiones que les resultan un obstáculo. El resultado es lo que Mbembe clasifica como un "sepulcre": el archivo "make[s] it possible to establish an unquestionable authority" (Mbembe 22) sobre los restos de lo que archiva.</p>
+
+    <p>Esta lógica es lo que Mbembe denomina <em>chronophagy</em>: "more than on its ability to recall, the power of the state rests on its ability to consume time, that is, to abolish the archive and anaesthetise the past" (Mbembe 23). Es así que cuando Morales firma los Decretos <a href="https://www.lexivox.org/norms/BO-DS-N3812.xhtml" target="_blank">3812</a> y <a href="https://www.lexivox.org/norms/BO-DS-N3973.html" target="_blank">3973</a> en 2019, indirectamente autoriza las quemas que destruyen los mismos territorios que la Ley 71 prometió proteger, violando el archivo desde adentro al ejercer la autoridad hermenéutica que lo produjo.</p>
+
+    <p><span class="tm tm-d">Derrida</span> En <em>Archive Fever</em>, Derrida analiza el concepto del archivo a su raíz griega, el <em>arkhē</em>, que "names at once the commencement and the commandment" (Derrida 1). Los magistrados que custodiaban los documentos en la Grecia antigua, "have the power to interpret the archives" (Derrida 2), convirtiéndolos en activos participantes del archivo y no en solo guardianes. Aplicado al Estado boliviano, el concepto derridiano del <em>archon</em> revela que cuando las comunidades indígenas del TIPNIS argumentan que la carretera viola sus derechos territoriales, el Estado no les niega el derecho en abstracto escrito en la Constitución, pero les niega la autoridad de interpretarlo.</p>
+
+    <p>Además, Derrida argumenta que "the archivization produces as much as it records the event" (Derrida 17), haciendo que el archivo no documenta una realidad preexistente, sino que la constituye. La Ley 71 no reconoce los derechos de la Madre Tierra que ya existían en la cosmología indígena: los produce en el formato jurídico que el Estado puede administrar, lo cual implica también producir sus límites, sus excepciones y sus condiciones de suspensión. En ese sentido, los tres marcos demuestran las acciones del Estado plurinacional como una forma de sistemáticamente reconocer la identidad indígena pero no como actos para transferir poder total a las comunidades.</p>
+
+    <div class="node-nav-row">
+      <button class="nnav-btn" onclick="showPage('abstract')">← Abstract</button>
+      <span class="nnav-count">Sección 2 de 8</span>
+      <button class="nnav-btn" onclick="showPage('n0')">2006 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- NODE 0: 2006 -->
+<!-- ══════════════════════════════════════ -->
+<div class="page" id="page-n0">
+  <div class="node-wrapper">
+    <span class="node-yr">2006</span>
+    <h2 class="node-title">Ascenso al poder y construcción del archivo inaugural</h2>
+
+    <div class="progress-dots">
+      <div class="pd active" onclick="showPage('n0')"></div>
+      <div class="pd" onclick="showPage('n1')"></div>
+      <div class="pd" onclick="showPage('n2')"></div>
+      <div class="pd" onclick="showPage('n3')"></div>
+      <div class="pd" onclick="showPage('n4')"></div>
+    </div>
+
+    <!-- ARCHIVO -->
+    <div class="scard open" id="s0-0">
+      <div class="scard-head" onclick="toggleCard('s0-0')">
+        <span class="stag stag-a">Archivo</span>
+        <span class="scard-label">Discurso Estatal</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>El 21 de enero de 2006, Evo Morales celebró una ceremonia simbólica de posesión en Tiwanaku, el centro ceremonial precolombino aymara y sitio de profunda carga histórica, un día antes de la posesión oficial en La Paz. Ante líderes indígenas de toda América Latina, Morales recibió básculos de mando y se declaró el primer presidente indígena de Bolivia, convocando a los pueblos originarios como protagonistas de la refundación del Estado. El discurso circuló internacionalmente como evidencia de una ruptura histórica ya que, por primera vez, el repertorio indígena parecía ocupar el centro del poder estatal en lugar de sus márgenes.</p>
+
+        <div class="media-row cols-2">
+          <div>
+            <img src="imgs/tiwanaku_ceremony.jpg" alt="Posesión simbólica en Tiwanaku, enero 2006" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <p class="media-caption">Evo Morales recibiendo los básculos de mando en Tiwanaku, 21 de enero de 2006 </p>
+          </div>
+          <div>
+            <img src="imgs/tiwanaku_ruins.jpg" alt="Centro ceremonial de Tiwanaku" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <p class="media-caption">Centro ceremonial de Tiwanaku, sitio precolombino aymara </p>
+          </div>
+        </div>
+
+        <div class="media-row cols-1" style="margin-top:1rem;">
+          <div class="video-wrap video-fallback">
+            <a href="https://www.youtube.com/watch?v=AdzjKdzr9tA" target="_blank">
+              ▶ Watch video on YouTube
+            </a>
+          </div>
+          <p class="video-label">Video: Evo Morales recibe la fuerza de los Dioses en Tiwanaku — Ceremonia ancestral, enero 2006</p>
+        </div>
+        <div class="sources-bar">
+          <a class="src-link" href="https://www.pagina12.com.ar/diario/especiales/18-62330-2006-01-30.html" target="_blank">
+            <span class="src-type">Fuente primaria</span> Discurso en Tiahuanaco durante su primera asunción — Página 12
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPERTORIO -->
+    <div class="scard" id="s0-1">
+      <div class="scard-head" onclick="toggleCard('s0-1')">
+        <span class="stag stag-r">Repertorio</span>
+        <span class="scard-label">Acción Estatal</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>Cuatro meses después, el 1 de mayo de 2006, Morales firmó el Decreto 28701 "Héroes del Chaco" que nacionalizó los hidrocarburos bolivianos bajo el eslogan de "gobierno de los pueblos." Tropas militares ocuparon los campos petroleros y la medida fue presentada como el fin del "saqueo de nuestros recursos naturales por empresas extranjeras" y la recuperación de la soberanía boliviana.</p>
+        <p>Sin embargo, la ejecución fue centralizada en la empresa petrolera estatal, Yacimientos Petrolíferos Fiscales Bolivianos (YPFB), sin ninguna participación de las comunidades indígenas cuyos territorios albergan los yacimientos. Las comunidades guaraní del Chaco, que habían vivido bajo formas de servidumbre en las haciendas petroleras, no recibieron consulta previa, participación en las regalías ni reconocimiento de derechos territoriales sobre el subsuelo.</p>
+
+        <div class="media-row cols-1">
+          <div>
+            <img src="imgs/morales_nationalization.jpg" alt="Nacionalización de hidrocarburos, mayo 2006" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <p class="media-caption">Morales anuncia la nacionalización de los hidrocarburos, Decreto 28701 «Héroes del Chaco», 1 de mayo de 2006 </p>
+          </div>
+        </div>
+
+        <div class="sources-bar">
+          <a class="src-link" href="https://www.gacetaoficialdebolivia.gob.bo/normas/buscar/28701" target="_blank">
+            <span class="src-type">Fuente primaria</span> Decreto Supremo 28701 "Héroes del Chaco" — Gaceta Oficial
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANÁLISIS -->
+    <div class="scard" id="s0-2">
+      <div class="scard-head" onclick="toggleCard('s0-2')">
+        <span class="stag stag-n">Análisis</span>
+        <span class="scard-label">Lectura Crítica</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>La elección de Tiwanaku como escenario fue la primera operación archivística para crear un Estado plurinacional. Morales no celebró esa ceremonia en el Palacio de Gobierno, espacio ligado al pasado colonialista, sino en un sitio tradicional indígena. Pero al convertirlo en escenario de la toma del poder estatal, realizó el movimiento que <span class="tm tm-t">Taylor</span> identifica como problemático al intentar preservar el repertorio a través de la transferencia al archivo. Tiwanaku dejó de funcionar como espacio vivo de práctica comunitaria y pasó a funcionar como documento, como evidencia transmisible a distancia, legible para audiencias internacionales que nunca participaron del repertorio que lo produjo. El sitio se convirtió en escenario mientras que su imagen pasó a ser el producto que circula. Lo que el mundo vio en los medios no fue el repertorio indígena, sino su transformación en archivo al servicio del proyecto estatal.</p>
+
+        <p>Cuatro meses después, el Decreto Supremo 28701 revela qué implicaba esa archivación en términos materiales. <span class="tm tm-m">Mbembe</span> argumenta que el archivo es el producto de la interpretación que determina qué entidades merecen estatus archivable y cuáles son descartadas. El decreto opera exactamente como esa máquina de selección: el pueblo es dado el reconocimiento de ser soberano y conectado a los recursos naturales, pero esa misma titularidad los excluye de la soberanía y derechos a los recursos en la práctica. Las comunidades guaraní en la zona del Chaco no fueron incluidas como sujetos de decisión real, convirtiendo la declaración de titularidad para el pueblo como una característica de una identidad que ya no controlan.</p>
+
+        <p>Más allá de la transferencia del saqueo de extranjeros al Estado, esta operación es estructuralmente sostenible por la autoridad que Morales crea en el Estado al incorporar la indigenidad en el archivo jurídico. <span class="tm tm-d">Derrida</span> aclara que este proceso transforma el terreno del conflicto: cuando las comunidades guaraní reclaman participación en las regalías petroleras, no pueden apelar a un derecho externo al archivo porque ese derecho no existe jurídicamente fuera de él. De este modo, el archivo plurinacional no parte de una promesa rota, sino de una promesa diseñada para cumplirse en el plano simbólico mientras se limita en el plano material.</p>
+      </div>
+    </div>
+
+    <div class="node-nav-row">
+      <button class="nnav-btn" onclick="showPage('marco')">← Marco Teórico</button>
+      <span class="nnav-count">Nodo 1 de 5</span>
+      <button class="nnav-btn" onclick="showPage('n1')">2009–10 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- NODE 1: 2009-10 -->
+<!-- ══════════════════════════════════════ -->
+<div class="page" id="page-n1">
+  <div class="node-wrapper">
+    <span class="node-yr">2009–10</span>
+    <h2 class="node-title">La Nueva Constitución y la Ley de la Madre Tierra</h2>
+
+    <div class="progress-dots">
+      <div class="pd" onclick="showPage('n0')"></div>
+      <div class="pd active" onclick="showPage('n1')"></div>
+      <div class="pd" onclick="showPage('n2')"></div>
+      <div class="pd" onclick="showPage('n3')"></div>
+      <div class="pd" onclick="showPage('n4')"></div>
+    </div>
+
+    <!-- ARCHIVO -->
+    <div class="scard open" id="s1-0">
+      <div class="scard-head" onclick="toggleCard('s1-0')">
+        <span class="stag stag-a">Archivo</span>
+        <span class="scard-label">Discurso Estatal</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>El discurso que acompaña la nueva Constitución boliviana de 2009 estuvo construido sobre una promesa de ruptura histórica. La administración del MAS enmarcó el proceso constituyente como una refundación en el que los pueblos indígenas obtendrían una cuota justa del poder político. El exmandatario Morales declaró que la nueva Constitución no estaba diseñada para subordinar a nadie ni crear nuevas élites: "queremos que los derechos sean iguales para todos." El MAS presentó la Constitución como la traducción legal de sus demandas, prometiendo que el Estado plurinacional sería el instrumento histórico para revertir siglos de separación colonial. Ese discurso se materializó en 2010 con la promulgación de la <a href="https://www.lexivox.org/norms/BO-L-N71.html" target="_blank">Ley 71, Ley de Derechos de la Madre Tierra</a>, que convirtió a Bolivia en el primer Estado del mundo en otorgar derechos jurídicos a la naturaleza utilizando principios de la cosmovisión indígena originaria campesina.</p>
+
+        <div class="media-row cols-1">
+          <div class="video-wrap video-fallback">
+            <a href="https://www.youtube.com/watch?v=6JRME6uFY4Q" target="_blank">
+              ▶ Watch video on YouTube
+            </a>
+          </div>
+          <p class="video-label">Visual: Morales' Battle To Change Bolivia's Constitution — BBC / YouTube</p>
+        </div>
+        
+        <div class="sources-bar">
+          <a class="src-link" href="https://www.pagina12.com.ar/diario/especiales/18-62330-2006-01-30.html" target="_blank">
+            <span class="src-type">Fuente primaria</span> Discurso en Tiahuanaco durante su primera asunción
+          </a>
+          <a class="src-link" href="https://pdba.georgetown.edu/Constitutions/Bolivia/bolivia09.html" target="_blank">
+            <span class="src-type">Fuente primaria</span> Constitución del Estado Plurinacional de Bolivia (2009)
+          </a>
+          <a class="src-link" href="https://www.lexivox.org/norms/BO-L-N71.html" target="_blank">
+            <span class="src-type">Fuente primaria</span> Ley de Derechos de la Madre Tierra (Ley 71, 2010)
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPERTORIO -->
+    <div class="scard" id="s1-1">
+      <div class="scard-head" onclick="toggleCard('s1-1')">
+        <span class="stag stag-r">Repertorio</span>
+        <span class="scard-label">Acción Estatal</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>Mientras la Asamblea Constituyente redactó los textos para garantizar la consulta previa y las autonomías territoriales indígenas, la extracción de gas natural en el Chaco boliviano continuó acelerándose sin que esas garantías se aplicaran en la práctica. <a href="https://commons.clarku.edu/faculty_idce/34/" target="_blank">Bebbington y Bebbington</a> documentaron que los conflictos entre la industria hidrocarburífera y las comunidades indígenas del departamento de Tarija se intensificaron durante este periodo en el que las operaciones de Repsol YPF dentro del territorio guaraní de Itika Guasu continuaron bajo esquemas de negociación que excluyó a las comunidades de las decisiones centrales acerca de la soberanía del subsuelo.</p>
+        <p>En 2010, la Asamblea del Pueblo Guaraní de Itika Guasu <a href="https://www.derechos.org/nizkor/bolivia/doc/apgig8.html" target="_blank">envió una carta formal</a> al exmandatario Morales reclamando derechos que la nueva Constitución acababa de consagrar pero que el Estado no implementó. Esta dinámica se consolidó con la <a href="https://www.cipca.org.bo/analisis-y-opinion/cipca-notas/avances-y-dificultades-en-la-ley-marco-de-autonomias-y-descentralizacion" target="_blank">Ley 31 Marco de Autonomías de 2010</a>: primero, la aprobación de los estatutos requería un referendo, una incoherencia que el Estado no resolvió pese a las propuestas de la CIDOB. Segundo, las autonomías indígenas debían competir por los mismos recursos de coparticipación tributaria que los municipios, distribuidos según población, lo que perjudicaba estructuralmente a las comunidades más pequeñas. Por último, la propuesta de asignar directamente a estas autonomías una porción del Impuesto Directo a los Hidrocarburos no fue incorporada, dejándolas sin financiamiento propio para ejercer las competencias reconocidas por la Constitución. El resultado fue, como señala <a href="https://www.cipca.org.bo/analisis-y-opinion/cipca-notas/avances-y-dificultades-en-la-ley-marco-de-autonomias-y-descentralizacion" target="_blank">CIPCA</a>, una situación de incertidumbre económica que hacía prácticamente inviable el ejercicio real de las autonomías.</p>
+
+        <div class="media-row cols-2">
+          <div>
+            <img src="imgs/asamblea.jpg" alt="Asamblea Constituyente boliviana, Sucre 2006" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <p class="media-caption">Sesión de la Asamblea Constituyente boliviana, Sucre, 2006–2007 </p>
+          </div>
+          <div>
+            <img src="imgs/guarani.jpg" alt="Comunidades guaraní del Chaco boliviano" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <p class="media-caption">Comunidades guaraní del Chaco boliviano </p>
+          </div>
+        </div>
+
+        <div class="sources-bar">
+          <a class="src-link" href="https://commons.clarku.edu/faculty_idce/34/" target="_blank">
+            <span class="src-type">Fuente académica</span> Bebbington & Bebbington (2010) — Gas in the Bolivian Chaco
+          </a>
+          <a class="src-link" href="https://www.derechos.org/nizkor/bolivia/doc/apgig8.html" target="_blank">
+            <span class="src-type">Fuente primaria</span> APG Itika Guasu — Carta al Estado Plurinacional (2010)
+          </a>
+          <a class="src-link" href="https://www.cipca.org.bo/analisis-y-opinion/cipca-notas/avances-y-dificultades-en-la-ley-marco-de-autonomias-y-descentralizacion" target="_blank">
+            <span class="src-type">Análisis institucional</span> CIPCA — Avances y dificultades en la Ley 031
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANÁLISIS -->
+    <div class="scard" id="s1-2">
+      <div class="scard-head" onclick="toggleCard('s1-2')">
+        <span class="stag stag-n">Análisis</span>
+        <span class="scard-label">Lectura Crítica</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>El periodo 2009–2010 representa el momento de mayor sofisticación archivística del Estado plurinacional. Cuando Morales declaró que la Constitución garantiza que "los derechos sean iguales para todos", no estaba documentando una realidad existente, lo estaba produciendo. <span class="tm tm-d">Derrida</span> argumenta que "the archivization produces as much as it records the event" (Derrida 17). Aplicado al caso boliviano, la Ley 71 no se limitó a reconocer los derechos preexistentes de los pueblos indígenas sobre sus territorios, sino que los produjo por primera vez dentro del formato jurídico estatal, con los límites y condiciones de suspensión propios de ese marco. Lo que parecía una victoria del repertorio indígena era en realidad su ingreso al archivo y, con ese ingreso, su sujeción a la autoridad interpretativa del Estado.</p>
+
+        <p>La Ley 31 es donde esa sujeción se vuelve evidente. <span class="tm tm-m">Mbembe</span> define el archivo como "the product of judgement" (Mbembe 20), y el análisis de CIPCA aclara la selección que el Estado decide omitir. La incoherencia entre el acceso a la autonomía por normas propias y la aprobación de estatutos por referendo no fue un descuido técnico: durante el proceso legislativo, la CIDOB propuso resolver esta contradicción, pero dicha propuesta no fue incorporada. La exclusión de la propuesta de asignar directamente una porción del IDH revela un carácter deliberado. En comunidades como Itika Guasu, esto significa que el gas se extrae de sus territorios sin que la Constitución les otorgara autoridad sobre los ingresos generados. Así, la Ley 71 otorgó derechos a la Madre Tierra al mismo tiempo que la Ley 31 diseñó un sistema donde las comunidades que más respetan esa tierra no podían financiar su propio gobierno.</p>
+
+        <p>La carta que la APG Itika Guasu envió a Morales en 2010 permite observar de manera concreta esta pérdida. <span class="tm tm-t">Taylor</span> diría que estas demandas constituyen formas vivas de soberanía territorial transmitidas a través de asambleas y procesos colectivos de decisión. Sin embargo, al ser incorporadas al archivo jurídico mediante la Constitución, estas demandas perdieron aquello que Taylor define como lo "nonreproducible" —su capacidad de ser reclamadas de maneras no previstas ni controladas por el Estado. El hecho de que la APG Itika Guasu tuviera que dirigirse al gobierno para exigir derechos ya reconocidos constitucionalmente evidencia la distancia entre el reconocimiento formal y el ejercicio efectivo de la soberanía.</p>
+      </div>
+    </div>
+
+    <div class="node-nav-row">
+      <button class="nnav-btn" onclick="showPage('n0')">← 2006</button>
+      <span class="nnav-count">Nodo 2 de 5</span>
+      <button class="nnav-btn" onclick="showPage('n2')">2011 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- NODE 2: 2011 -->
+<!-- ══════════════════════════════════════ -->
+<div class="page" id="page-n2">
+  <div class="node-wrapper">
+    <span class="node-yr">2011</span>
+    <h2 class="node-title">El TIPNIS y la hipocresía ambiental</h2>
+
+    <div class="progress-dots">
+      <div class="pd" onclick="showPage('n0')"></div>
+      <div class="pd" onclick="showPage('n1')"></div>
+      <div class="pd active" onclick="showPage('n2')"></div>
+      <div class="pd" onclick="showPage('n3')"></div>
+      <div class="pd" onclick="showPage('n4')"></div>
+    </div>
+
+    <!-- ARCHIVO -->
+    <div class="scard open" id="s2-0">
+      <div class="scard-head" onclick="toggleCard('s2-0')">
+        <span class="stag stag-a">Archivo</span>
+        <span class="scard-label">Discurso Estatal</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>En múltiples escenarios internacionales, incluyendo en sus discursos ante la Asamblea General de la Organización de Naciones Unidas, el exmandatario Morales construyó una narrativa internacional de Bolivia como defensor global de los derechos de la Madre Tierra y de los pueblos indígenas. Afirmó que el capitalismo era el principal enemigo del planeta y que los pueblos indígenas representaban la única alternativa civilizatoria sostenible. La retórica del MAS anti-colonial y anti-extractivista posicionó a Bolivia como referente latinoamericano del "buen vivir" y le valió reconocimiento internacional.</p>
+
+        <div class="media-row cols-1">
+          <div class="video-wrap video-fallback">
+            <a href="https://www.youtube.com/watch?v=qJStS5uIRiA" target="_blank">
+              ▶ Watch video on YouTube
+            </a>
+          </div>
+          <p class="video-label">Visual: Morales entrevista en COP15 — Copenhagen, 2009 — YouTube</p>
+        </div>
+
+        <div class="sources-bar">
+          <a class="src-link" href="https://www.un.org/es/ga/62/plenary/bolivia.shtml" target="_blank">
+            <span class="src-type">Fuente primaria</span> Discurso de Evo Morales ante la Asamblea General de la ONU (2007)
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPERTORIO -->
+    <div class="scard" id="s2-1">
+      <div class="scard-head" onclick="toggleCard('s2-1')">
+        <span class="stag stag-r">Repertorio</span>
+        <span class="scard-label">Acción Estatal</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>En agosto de 2011, 1.500 indígenas moxeños, yuracarés y chimanes iniciaron la VIII Marcha Indígena desde el TIPNIS hasta La Paz, recorriendo más de 600 kilómetros para exigir que el gobierno suspenda la construcción de la carretera Villa Tunari–San Ignacio de Moxos, que atravesaba el territorio protegido sin consulta previa. El 25 de septiembre, 500 efectivos policiales rodearon el campamento de Chaparina y lanzaron gases lacrimógenos.</p>
+
+        <p>Los marchistas fueron golpeados, maniatados con cinta adhesiva y subidos por la fuerza a buses, apilados boca abajo. Investigaciones de la Defensoría del Pueblo documentaron que el operativo fue premeditado: existía una factura de ferretería por 20 tenazas cortafrío y 10 docenas de cinta para amordazar a las víctimas. Varios niños fueron separados de sus madres; una dirigente perdió al hijo que llevaba en el vientre. La orden fue emitida por el Ministro de Gobierno Sacha Llorenti, quien no fue procesado. Meses después, el mismo gobierno lo nombró embajador ante la ONU.</p>
+
+        <div class="media-row cols-2">
+          <div>
+            <img src="imgs/tipnis_march.jpg" alt="VIII Marcha Indígena del TIPNIS 2011" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <p class="media-caption">VIII Marcha Indígena del TIPNIS hacia La Paz, agosto–septiembre 2011 </p>
+          </div>
+          <div>
+            <img src="imgs/chaparina.jpg" alt="Represión policial en Chaparina, 25 de septiembre 2011" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <p class="media-caption">Represión policial en Chaparina, 25 de septiembre de 2011 — Defensoría del Pueblo</p>
+          </div>
+        </div>
+
+        <div class="media-row cols-1" style="margin-top:1rem;">
+          <div class="video-wrap video-fallback">
+            <a href="https://www.youtube.com/watch?v=dkkVr35F2Jc" target="_blank">
+              ▶ Watch video on YouTube
+            </a>
+          </div>
+          <p class="video-label">Video: Represión policial a la VIII Marcha Indígena en Chaparina, 25 de septiembre de 2011</p>
+        </div>
+        <div class="sources-bar">
+          <a class="src-link" href="https://ddhhyjusticia.org/la-represion-en-chaparina-permanece-en-la-impunidad/" target="_blank">
+            <span class="src-type">Derechos humanos</span> La represión en Chaparina permanece en la impunidad — ODHJ
+          </a>
+          <a class="src-link" href="https://www.defensoria.gob.bo" target="_blank">
+            <span class="src-type">Fuente primaria</span> Informe Defensoría del Pueblo — Chaparina (2011)
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANÁLISIS -->
+    <div class="scard" id="s2-2">
+      <div class="scard-head" onclick="toggleCard('s2-2')">
+        <span class="stag stag-n">Análisis</span>
+        <span class="scard-label">Lectura Crítica</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>El conflicto del TIPNIS marca un punto de inflexión en la lógica del archivo plurinacional. Si en los años anteriores el Estado había incorporado la indigenidad en el archivo jurídico mediante la Constitución y la legislación, este momento revela los límites de ese reconocimiento cuando las comunidades intentan ejercer los derechos que el propio Estado ha codificado. La marcha indígena hacia La Paz representaba la activación de derechos ya inscritos en el archivo constitucional. Sin embargo, la respuesta estatal no consistió en negar esos derechos, sino en controlar su interpretación y suspender su aplicación en la práctica.</p>
+
+        <p>La represión de Chaparina evidencia este desplazamiento. El archivo ya no opera únicamente como un mecanismo de incorporación, sino también como un dispositivo que permite neutralizar formas de resistencia que se articulan desde el repertorio. <span class="tm tm-d">Derrida</span> sugiere que el archivo conserva y establece las condiciones bajo las cuales un evento puede ser interpretado. El Estado boliviano, como <em>archon</em>, monopoliza ese derecho hermenéutico, definiendo qué constituye consulta previa, qué se entiende por territorio indígena y en qué circunstancias estos derechos pueden ser subordinados al desarrollo nacional.</p>
+
+        <p>La figura de Sacha Llorenti intensifica esta lógica. <span class="tm tm-m">Mbembe</span> describe cómo el archivo funciona como un espacio de control que fija el significado de los eventos y suspende su resolución. La represión no fue reconocida como un error político, sino que se transformó en un objeto de gestión burocrática, desplazado hacia disputas judiciales que diluyen la responsabilidad y postergan indefinidamente cualquier cierre. Trece años después, ningún responsable político fue sancionado.</p>
+
+        <p>En este sentido, Chaparina no constituye una ruptura del proyecto plurinacional —representa un momento de mayor claridad. <span class="tm tm-t">Taylor</span> permitiría ver que la VIII Marcha fue exactamente lo que el archivo no puede contener: 600 kilómetros de repertorio encarnado. Que ese repertorio no haya prevalecido no significa que haya fracasado: significa que el archivo plurinacional hizo bien su trabajo.</p>
+      </div>
+    </div>
+
+    <div class="node-nav-row">
+      <button class="nnav-btn" onclick="showPage('n1')">← 2009–10</button>
+      <span class="nnav-count">Nodo 3 de 5</span>
+      <button class="nnav-btn" onclick="showPage('n3')">2014–16 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- NODE 3: 2014-16 -->
+<!-- ══════════════════════════════════════ -->
+<div class="page" id="page-n3">
+  <div class="node-wrapper">
+    <span class="node-yr">2014–16</span>
+    <h2 class="node-title">Extractivismo como política sistémica</h2>
+
+    <div class="progress-dots">
+      <div class="pd" onclick="showPage('n0')"></div>
+      <div class="pd" onclick="showPage('n1')"></div>
+      <div class="pd" onclick="showPage('n2')"></div>
+      <div class="pd active" onclick="showPage('n3')"></div>
+      <div class="pd" onclick="showPage('n4')"></div>
+    </div>
+
+    <!-- ARCHIVO -->
+    <div class="scard open" id="s3-0">
+      <div class="scard-head" onclick="toggleCard('s3-0')">
+        <span class="stag stag-a">Archivo</span>
+        <span class="scard-label">Discurso Estatal</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>Entre 2014 y 2016, el gobierno del MAS consolidó un discurso de "desarrollo con identidad" que buscaba articular el extractivismo con la retórica del vivir bien. Morales sostuvo repetidamente que Bolivia no podía renunciar a sus recursos naturales, ya que sin gas, minería e industrialización no habría redistribución social ni continuidad del proceso de descolonización. En este marco, el <a href="https://www.planificacion.gob.bo" target="_blank">Plan de Desarrollo Económico y Social 2016–2020</a> presentó la expansión productiva como condición necesaria del proyecto plurinacional. La Ley 300 seguía funcionando como respaldo archivístico de esa narrativa, manteniendo a Bolivia, en el papel y ante el mundo, como un Estado comprometido con los derechos de la Madre Tierra.</p>
+
+        <div class="media-row cols-1">
+          <img src="imgs/morales_nationalization.jpg" alt="Evo Morales durante el período 2014–2016" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+          <p class="media-caption">Evo Morales durante el período de «desarrollo con identidad», 2014–2016 </p>
+        </div>
+
+        <div class="sources-bar">
+          <a class="src-link" href="https://www.planificacion.gob.bo" target="_blank">
+            <span class="src-type">Fuente primaria</span> Plan de Desarrollo Económico y Social 2016–2020
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPERTORIO -->
+    <div class="scard" id="s3-1">
+      <div class="scard-head" onclick="toggleCard('s3-1')">
+        <span class="stag stag-r">Repertorio</span>
+        <span class="scard-label">Acción Estatal</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>El Decreto Supremo 2366 de 2015 autorizó actividades hidrocarburíferas en áreas protegidas, incluyendo zonas con presencia indígena, mediante una excepción técnica al régimen de protección ambiental. Al mismo tiempo, la frontera agropecuaria continuó expandiéndose en el oriente boliviano.</p>
+        <p>Informes como el de <a href="https://globalwitness.org/en/campaigns/forests/empty-promises-cargill-soy-banks-and-the-destruction-of-bolivias-chiquitano-forest/" target="_blank">Global Witness</a> documentan cómo el avance de la soya fragmentó el bosque chiquitano con respaldo de políticas estatales, al igual que el tráfico de tierras en áreas protegidas se incrementó durante este periodo sin respuesta inmediata institucional, como registra <a href="https://news.mongabay.com/2021/11/forests-for-sale-how-land-traffickers-profit-by-slicing-up-bolivias-protected-areas/" target="_blank">Berton (2021)</a>.</p>
+
+        <div class="media-row cols-2">
+          <div>
+            <img src="imgs/deforestation.jpg" alt="Deforestación en el bosque chiquitano, oriente boliviano" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <p class="media-caption">Deforestación en el bosque chiquitano del oriente boliviano </p>
+          </div>
+          <div>
+            <img src="imgs/soy.jpg" alt="Expansión de la frontera soyera, 2015–2016" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <p class="media-caption">Expansión de la frontera soyera en el oriente boliviano, 2015–2016 </p>
+          </div>
+        </div>
+
+        <div class="sources-bar">
+          <a class="src-link" href="https://www.gacetaoficialdebolivia.gob.bo" target="_blank">
+            <span class="src-type">Fuente primaria</span> Decreto Supremo 2366 (2015) — Gaceta Oficial
+          </a>
+          <a class="src-link" href="https://globalwitness.org/en/campaigns/forests/empty-promises-cargill-soy-banks-and-the-destruction-of-bolivias-chiquitano-forest/" target="_blank">
+            <span class="src-type">Evidencia territorial</span> Global Witness — El bosque chiquitano (2023)
+          </a>
+          <a class="src-link" href="https://news.mongabay.com/2021/11/forests-for-sale-how-land-traffickers-profit-by-slicing-up-bolivias-protected-areas/" target="_blank">
+            <span class="src-type">Evidencia periodística</span> Berton (2021) — Forests for sale, Mongabay
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANÁLISIS -->
+    <div class="scard" id="s3-2">
+      <div class="scard-head" onclick="toggleCard('s3-2')">
+        <span class="stag stag-n">Análisis</span>
+        <span class="scard-label">Lectura Crítica</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>Este periodo representa una transformación cualitativa en la relación entre archivo y repertorio. El Estado no abandona el archivo de la Madre Tierra. Por el contrario, lo conserva como respaldo simbólico mientras autoriza, mediante decretos y planes de desarrollo, prácticas que vacían su contenido material.</p>
+
+        <p><span class="tm tm-m">Mbembe</span> identifica este mecanismo al describir la función del archivo en relación a la autoridad. El discurso del "desarrollo con identidad" opera exactamente así: invoca ritualmente el archivo ambiental e indígena mientras el Decreto 2366 lo vacía de efecto jurídico real. Así, la protección de la Madre Tierra permanece intacta en el plano jurídico, mientras el territorio queda abierto a la expansión extractiva. Esto demuestra cómo el poder reside en la capacidad estatal de interpretar, suspender y organizar la ley según sus prioridades. El bosque chiquitano puede seguir siendo legalmente protegido mientras es físicamente fragmentado, porque la protección existe en el archivo y la fragmentación ocurre en el repertorio.</p>
+
+        <p><span class="tm tm-t">Taylor</span> ayuda a ver la pérdida que esta operación produce en el repertorio territorial indígena. El bosque chiquitano es parte de conocimiento vivo y memorias de las comunidades. Una vez fragmentado por la frontera agropecuaria y extractivista, ese repertorio no puede ser restaurado mediante el mismo archivo que prometía protegerlo. Por eso, este periodo muestra al archivo plurinacional como una forma coherente de poder que preserva el lenguaje de la protección mientras administra su incumplimiento material. <span class="tm tm-d">Derrida</span> diría que el Estado, como <em>archon</em> con autoridad hermenéutica exclusiva, no necesita negar los derechos para neutralizarlos: le basta con definir cuándo son compatibles con el desarrollo nacional.</p>
+      </div>
+    </div>
+
+    <div class="node-nav-row">
+      <button class="nnav-btn" onclick="showPage('n2')">← 2011</button>
+      <span class="nnav-count">Nodo 4 de 5</span>
+      <button class="nnav-btn" onclick="showPage('n4')">2019 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- NODE 4: 2019 -->
+<!-- ══════════════════════════════════════ -->
+<div class="page" id="page-n4">
+  <div class="node-wrapper">
+    <span class="node-yr">2019</span>
+    <h2 class="node-title">Los decretos del fuego y el colapso del archivo</h2>
+
+    <div class="progress-dots">
+      <div class="pd" onclick="showPage('n0')"></div>
+      <div class="pd" onclick="showPage('n1')"></div>
+      <div class="pd" onclick="showPage('n2')"></div>
+      <div class="pd" onclick="showPage('n3')"></div>
+      <div class="pd active" onclick="showPage('n4')"></div>
+    </div>
+
+    <!-- ARCHIVO -->
+    <div class="scard open" id="s4-0">
+      <div class="scard-head" onclick="toggleCard('s4-0')">
+        <span class="stag stag-a">Archivo</span>
+        <span class="scard-label">Discurso Estatal</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>Durante la campaña pre-electoral de 2019, Morales continuó presentando a Bolivia como el país más comprometido del mundo con los derechos de la naturaleza y los pueblos originarios. En discursos públicos, seguía invocando el modelo del "vivir bien" como evidencia de que el proceso de cambio era irreversible y que solo el MAS podía garantizar su continuidad. Después de la <a href="https://www.tribunalconstitucional.gob.bo" target="_blank">resolución del Tribunal Constitucional Plurinacional de 2017</a>, que habilitó la reelección indefinida como derecho político, el gobierno reforzó la imagen de Morales como garante insustituible del proyecto plurinacional.</p>
+
+        <div class="media-row cols-1">
+          <div class="video-wrap video-fallback">
+            <a href="https://www.youtube.com/watch?v=zciFCO8Y9Xc" target="_blank">
+              ▶ Watch video on YouTube
+            </a>
+          </div>
+          <p class="video-label">Visual: Discurso de Evo Morales ante la Asamblea General de la ONU, 2019</p>
+        </div>
+
+        <div class="sources-bar">
+          <a class="src-link" href="https://www.tribunalconstitucional.gob.bo" target="_blank">
+            <span class="src-type">Fuente primaria</span> Resolución del Tribunal Constitucional sobre reelección indefinida (2017)
+          </a>
+          <a class="src-link" href="https://www.comunicacion.gob.bo" target="_blank">
+            <span class="src-type">Fuente primaria</span> Discurso de Morales — Ministerio de Comunicación (2019)
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPERTORIO -->
+    <div class="scard" id="s4-1">
+      <div class="scard-head" onclick="toggleCard('s4-1')">
+        <span class="stag stag-r">Repertorio</span>
+        <span class="scard-label">Acción Estatal</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>En enero y julio de 2019, Morales firmó los Decretos Supremos <a href="https://www.lexivox.org/norms/BO-DS-N3812.xhtml" target="_blank">3812</a> y <a href="https://www.lexivox.org/norms/BO-DS-N3973.html" target="_blank">3973</a>, ampliando las áreas permitidas para quemas agrícolas en Santa Cruz y Beni, regiones con presencia de territorios indígenas y áreas protegidas. Los incendios de ese año consumieron más de 5,3 millones de hectáreas, de las cuales el 58% corresponden a bosques, según la <a href="https://www.ftierra.org" target="_blank">Fundación Tierra</a>.</p>
+        <p>La Comisión Interamericana de Derechos Humanos documentó que el impacto alcanzó 27 comunidades indígenas y 20 áreas protegidas, con pérdida de cultivos y animales, contaminación del aire y desplazamiento forzado. En octubre de ese mismo año, la crisis electoral derivó en la renuncia de Morales, exponiendo la distancia entre su discurso de mandato popular y las prácticas de concentración de poder que lo habían sostenido.</p>
+
+        <div class="bq bq-red">
+          "If not fire, we'll be killed by hunger."
+          <span class="cite">— Testimonio de comunidad chiquitana, The Guardian, 2025</span>
+        </div>
+
+        <div class="media-row cols-2">
+          <div>
+            <img src="imgs/fires_satellite.jpg" alt="Incendios en Bolivia, satélite NASA 2019" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <p class="media-caption">Incendios en Bolivia vistos desde satélite NASA, septiembre 2019 — NASA </p>
+          </div>
+          <div>
+            <img src="imgs/fires_ground.jpg" alt="Bosque chiquitano afectado por los incendios de 2019" style="width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border);display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <p class="media-caption">Bosque chiquitano afectado por los incendios autorizados por los Decretos 3812 y 3973, 2019 </p>
+          </div>
+        </div>
+
+        <div class="media-row cols-1" style="margin-top:1rem;">
+          <div class="video-wrap video-fallback">
+            <a href="https://www.youtube.com/watch?v=oEFJu9vqV" target="_blank">
+              ▶ Watch video on YouTube
+            </a>
+          </div>
+          <p class="video-label">Video: Incendios forestales arrasan los bosques de Bolivia — Chiquitanía, 2019</p>
+        </div>
+        <div class="sources-bar">
+          <a class="src-link" href="https://www.lexivox.org/norms/BO-DS-N3812.xhtml" target="_blank">
+            <span class="src-type">Fuente primaria</span> Decreto Supremo 3812 (enero 2019)
+          </a>
+          <a class="src-link" href="https://www.lexivox.org/norms/BO-DS-N3973.html" target="_blank">
+            <span class="src-type">Fuente primaria</span> Decreto Supremo 3973 (julio 2019)
+          </a>
+          <a class="src-link" href="https://www.ftierra.org" target="_blank">
+            <span class="src-type">Evidencia ambiental</span> Fundación Tierra — Reporte de incendios (2024)
+          </a>
+          <a class="src-link" href="https://reliefweb.int/report/bolivia-plurinational-state/unicef-bolivia-humanitarian-situation-report-no-1-forest-fires-24-september-2024" target="_blank">
+            <span class="src-type">Evidencia humanitaria</span> UNICEF Bolivia Humanitarian Report (2024)
+          </a>
+          <a class="src-link" href="https://www.theguardian.com/global-development/2025/feb/20/bolivia-chiquitania-wildfires-climate-crisis-drought-food-shortages-health-disease-women-sexual-violence" target="_blank">
+            <span class="src-type">Testimonio periodístico</span> Swift (2025) — The Guardian
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANÁLISIS -->
+    <div class="scard" id="s4-2">
+      <div class="scard-head" onclick="toggleCard('s4-2')">
+        <span class="stag stag-n">Análisis</span>
+        <span class="scard-label">Lectura Crítica</span>
+        <span class="stoggle">+</span>
+      </div>
+      <div class="scard-body">
+        <p>El nodo 2019 es el cierre lógico de un argumento construido a lo largo de trece años. Desde 2006, el Estado había producido un archivo cada vez más sofisticado de la indigenidad y los derechos de la naturaleza. Cada instrumento jurídico amplificaba el anterior: el discurso de Tiwanaku, el Decreto 28701, la Constitución, la Ley 71, el Plan de Desarrollo 2016–2020. En 2019, ese mismo Estado firmó los decretos que habilitaron la quema de los territorios que ese archivo había prometido proteger.</p>
+
+        <p><span class="tm tm-m">Mbembe</span> escribe que el poder del Estado descansa más en su capacidad de consumir el tiempo que en su capacidad de recordarlo. Los incendios no fueron presentados como resultado de una larga historia de autorizaciones estatales, expansión agropecuaria y excepciones legales. Fueron absorbidos como emergencia o desastre, separando el fuego de las condiciones jurídicas que lo hicieron posible. Los decretos de quema operan como una forma de liberarse de la deuda política que el archivo plurinacional había contraído con los pueblos indígenas y con la Madre Tierra.</p>
+
+        <p>La autorización para la reelección indefinida completa esta lógica desde el plano constitucional. <span class="tm tm-d">Derrida</span> Al reinterpretar la Constitución de 2009 para habilitar a Morales, el Estado actuó como el <em>archon</em> derridiano, dueño de la autoridad para leer y organizar su propio archivo. La Constitución que había sido presentada como instrumento de los pueblos terminó convertida en instrumento de continuidad presidencial. El 2019 demostró ese control en dos formas simultáneas: la interpretación del mandato popular y la autorización legal de la quema.</p>
+
+        <p><span class="tm tm-t">Taylor</span> Las comunidades chiquitanas afectadas por los incendios no perdieron únicamente bosque o recursos naturales. Perdieron parte de un repertorio territorial encarnado, transmitido mediante prácticas comunitarias, formas de conocimiento ecológico y relaciones históricas con la tierra. Ese repertorio, a diferencia del archivo jurídico, no puede restaurarse con una nueva ley ni con una declaración posterior de protección. Por eso, 2019 no muestra simplemente una contradicción entre discurso y acción. Muestra el colapso material del archivo plurinacional.</p>
+
+        <div class="bq bq-red">
+          El Estado plurinacional no fracasó ante el fuego. Lo firmó.
+        </div>
+      </div>
+    </div>
+
+    <div class="node-nav-row">
+      <button class="nnav-btn" onclick="showPage('n3')">← 2014–16</button>
+      <span class="nnav-count">Nodo 5 de 5</span>
+      <button class="nnav-btn" onclick="showPage('conclusion')">Conclusión →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- PAGE: CONCLUSIÓN -->
+<!-- ══════════════════════════════════════ -->
+<div class="page" id="page-conclusion">
+  <div class="long-section">
+    <h2>Conclusión</h2>
+    <p class="section-deck">Síntesis del argumento — 2006–2019</p>
+
+    <p>Leer el período 2006–2019 a través de <span class="tm tm-t">Taylor</span>, <span class="tm tm-m">Mbembe</span> y <span class="tm tm-d">Derrida</span> permite comprender que el archivo plurinacional funcionó como una tecnología de poder. Taylor muestra que, al inscribir el repertorio indígena en el archivo jurídico estatal, el Estado lo transformó en una forma administrable, despojándolo de su carácter colectivo e indeterminado. Mbembe permite entender que los patrones sistemáticos crearon legitimidad nacional e internacional, lo que permitió al Estado gestionar sus contradicciones sin resolverlas. Derrida, por su parte, revela que esta forma de poder se volvió especialmente eficaz porque el Estado se constituyó como el intérprete autorizado de los derechos que él mismo había archivado.</p>
+
+    <p>La pregunta que este proyecto deja abierta es qué significa una descolonización que no dependiera del archivo estatal como condición de legibilidad. Las comunidades indígenas que marcharon en defensa del TIPNIS, que escribieron cartas al gobierno y que bloquearon pistas de aterrizaje con sus cuerpos ejercieron precisamente el repertorio que el archivo no podía contener. Que ese repertorio no haya prevalecido no significa que haya fracasado. Significa que el archivo plurinacional cumplió su función: reconocer la indigenidad como fundamento simbólico del Estado al mismo tiempo de limitar las condiciones materiales de su soberanía.</p>
+
+    <div class="bq" style="margin-top:2rem;">
+      El archivo plurinacional no fracasó en representar a los pueblos indígenas. Los instrumentalizó —redefiniendo la indigenidad como categoría archivística para producir legitimidad política sin ceder soberanía territorial ni económica.
+    </div>
+
+    <div style="height:2rem"></div>
+
+    <div style="background:var(--bg2); border:1px solid var(--border); padding:1.5rem 1.8rem; margin-top:1.5rem;">
+      <p style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:1rem;">Marco teórico utilizado</p>
+      <p style="font-size:0.92rem; color:var(--text2); margin-bottom:0.6rem;">Taylor, Diana. <em>The Archive and the Repertoire.</em> Duke UP, 2003.</p>
+      <p style="font-size:0.92rem; color:var(--text2); margin-bottom:0.6rem;">Mbembe, Achille. "The Power of the Archive and Its Limits." <em>Refiguring the Archive</em>, Kluwer Academic, 2002, pp. 19–26.</p>
+      <p style="font-size:0.92rem; color:var(--text2); margin-bottom:0;">Derrida, Jacques. <em>Archive Fever: A Freudian Impression.</em> U of Chicago P, 1996.</p>
+    </div>
+
+    <div class="node-nav-row">
+      <button class="nnav-btn" onclick="showPage('n4')">← 2019</button>
+      <span class="nnav-count">Sección 8 de 8</span>
+      <button class="nnav-btn" disabled>Fin →</button>
+    </div>
+  </div>
+</div>
+
+<div class="sec-div"></div>
+<footer>
+  <span>El Archivo Plurinacional</span> — SPAN 3267-01<br>
+  Marco teórico: Taylor · Mbembe · Derrida<br>
+  Línea de tiempo interactiva digital
+</footer>
+
+<script>
+  const pages = ['abstract','marco','n0','n1','n2','n3','n4','conclusion'];
+  let current = 'abstract';
+
+  function showPage(id) {
+    // hide all
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+
+    // show target
+    document.getElementById('page-' + id).classList.add('active');
+
+    // activate correct tab
+    const idx = pages.indexOf(id);
+    document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+
+    // open first card of node pages
+    if (['n0','n1','n2','n3','n4'].includes(id)) {
+      const node = document.getElementById('page-' + id);
+      node.querySelectorAll('.scard').forEach((c, i) => {
+        if (i === 0) c.classList.add('open');
+        else c.classList.remove('open');
+      });
+    }
+
+    current = id;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleCard(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+</script>
+</body>
+</html>
